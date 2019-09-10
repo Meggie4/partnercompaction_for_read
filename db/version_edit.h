@@ -31,13 +31,25 @@ struct FileMetaData {
   InternalKey smallest;       // Smallest internal key served by table
   InternalKey largest;        // Largest internal key served by table
 
-  //////////////meggie 
+  //////////////meggie
+  shared_ptr<HyperLogLog> hll;
   InternalKey origin_smallest;
   InternalKey origin_largest;
   std::vector<Partner> partners;
   //////////////meggie
-  FileMetaData() : refs(0), allowed_seeks(1 << 30), file_size(0) { }
-  
+  FileMetaData() : refs(0), allowed_seeks(1 << 30), file_size(0), 
+    //////////////meggie
+    hll(std::make_shared<HyperLogLog>(12))
+    //////////////meggie
+    { }
+ 
+  ////////////meggie
+  void AddToHyperloglog(const Slice& key) {
+    const Slice& user_key = ExtractUserKey(key);
+    int64_t hash = MurmurHash64A(user_key.data(), user_key.size(), 0);
+    hll->AddHash(hash);
+  }
+  ////////////meggie
 };
 
 class VersionEdit {

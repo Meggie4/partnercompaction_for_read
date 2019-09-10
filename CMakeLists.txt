@@ -164,6 +164,8 @@ target_sources(leveldb
     "${PROJECT_SOURCE_DIR}/util/threadpool_new.h"
     "${PROJECT_SOURCE_DIR}/util/debug.cc"
     "${PROJECT_SOURCE_DIR}/util/debug.h"
+    "${PROJECT_SOURCE_DIR}/util/hyperloglog.cc"
+    "${PROJECT_SOURCE_DIR}/util/hyperloglog.h"
     #########meggie
 
   # Only CMake 3.3+ supports PUBLIC sources in targets exported by "install".
